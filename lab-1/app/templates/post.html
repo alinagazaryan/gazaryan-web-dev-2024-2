@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="mt-5" style="width: 75%; display: block; margin-right: auto; margin-left: auto;">
+        <h1 class="mt-5">{{ post.title }}</h1>
+        <div class="author-and-date text-muted">
+            Автор: {{ post.author }},&nbsp&nbspДата публикации: {{ post.date.strftime('%d.%m.%Y') }}
+        </div>
+        <img class="my-5" style="width: 100%;" src="{{ url_for('static', filename='images/' + post.image_id) }}" alt="Image">
+        <p style="text-align: justify;"> {{ post.text }} </p>
+
+        <div class="mt-5 comment-form" style="border: 1px solid #B0C4DE">
+            <div style="background-color: #B0C4DE;">
+                <label class="my-1" style="margin-left: 10px;">Оставить комментарий</label>    
+            </div>
+            
+            <div class="my-4" style="display: block; width: 95%; margin-right: auto; margin-left: auto;">
+                <div class="mt-3">
+                    <textarea style="width: 100%;"></textarea>
+                </div>
+                <div>
+                    <a class="btn btn-primary" style="display: inline;">Отправить</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="comments-list d-flex" style="width: 75%; margin-right: auto; margin-left: auto;">
+        <div class="flex-grow-1 ms-3">
+            {% for comment in post.comments %}
+                
+                <div class="mt-4">
+                    <h5> {{ comment['author'] }} </h5>
+                    <p> {{ comment['text'] }} </p>
+                </div>
+
+                {% if 'replies' in comment: %}
+                    {% for reply in comment['replies'] %}
+
+                        <div class="d-flex mt-4">
+                            <div class="flex-grow-1 ms-5">
+                                <h5> {{ reply['author'] }} </h5>
+                                <p> {{ reply['text'] }} </p>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+
+                {% endif %}
+
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
