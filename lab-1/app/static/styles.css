@@ -6,15 +6,16 @@ body {
     max-width: 100%;
 }
 
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+}
+
 .footer {
     position: bottom;
     left: 0;
     bottom: 0;
     width: 100%;
 }
-/* 
-.footer{
-    position: absolute;
-    bottom: 0;
-    /* left: 0; */
-} */
