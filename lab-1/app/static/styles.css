@@ -14,8 +14,13 @@ body {
 }
 
 .footer {
-    position: bottom;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 auto 0 auto; 
+    /* position: fixed;
     left: 0;
     bottom: 0;
-    width: 100%;
+    width: 100%; */
 }
