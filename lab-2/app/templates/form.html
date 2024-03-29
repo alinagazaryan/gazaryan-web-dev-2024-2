@@ -1,0 +1,25 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Форма отправки</h1>
+<form action="" method="post" class="forms">
+  <div class="form">
+    <label for="form1">Тема сообщения</label>
+    <input type="text" id="form1" name="Тема" value="{{request.form['topic']}}" /><br>
+  </div>
+  <div class="form">
+    <label for="form2">Текст сообщения</label>
+    <textarea type="text" id="form2" name="Текст">
+{{request.form.get('text', '')}}</textarea><br>
+  </div>
+  <button type="submit" btn btn-primary>Отправить</button>
+</form>
+<table class="table">
+  <tbody>
+    {% for key, value in request.form.items() %}
+    <tr>
+      <td>{{ key }}</td>
+      <td>{{ value }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
