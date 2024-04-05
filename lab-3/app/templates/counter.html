@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="containeer">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <p class="fw-bold text-center"> Вы  посетили эту страницу {{ session["counter"] }} раз.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="containeer">
+    <div class="row">
+        <div class="col bg-light">
+            Вы  посетили эту страницу {{ session["counter"] }} раз.
+        </div>
+    </div>
+</div> -->
+{% endblock %}
