@@ -1,0 +1,6 @@
+ve
+app/migrations
+app/__pycache__
+app/instance
+app/media
+app/config.py
