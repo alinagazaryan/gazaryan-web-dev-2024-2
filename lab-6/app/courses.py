@@ -80,19 +80,16 @@ def show(course_id):
 
 @bp.route('/<int:course_id>/reviews', methods=['GET', 'POST'])
 def reviews(course_id):
-    check_review = Review.query.filter_by(course_id=course_id, user_id=current_user.id).first() # здесь первое обращение к таблице review
-    # что делает строка в таблицу review делаем запрос, фильтруем по ...
-    if check_review:
-        flash('Вы уже оставили отзыв.', 'danger')
-        return redirect(url_for('courses.show', course_id=course_id))
-    else:
-        if request.method == 'POST':
-            
+    if request.method == 'POST':
+        check_review = Review.query.filter_by(course_id=course_id, user_id=current_user.id).first()
+        if check_review:
+            flash('Вы уже оставили отзыв.', 'danger')
+        else:
             rating_value = int(request.form['rating'])
             text = request.form['text']
 
             review = Review(text=text, rating=rating_value, 
-                        course_id=course_id, user_id=current_user.id)
+                            course_id=course_id, user_id=current_user.id)
             
             try:
                 db.session.add(review)
@@ -101,32 +98,34 @@ def reviews(course_id):
                 course.rating_num += 1
                 db.session.add(course)
                 db.session.commit()
-                flash(f'Отзыв успешно добавлен', 'success')
+                flash('Отзыв успешно добавлен', 'success')
             except:
                 db.session.rollback()
-                flash(f'При сохранении отзыва произошла ошибка', 'danger')
+                flash('При сохранении отзыва произошла ошибка', 'danger')
             
-            return redirect(url_for('courses.show', course_id=course_id))
+        return redirect(url_for('courses.show', course_id=course_id))
 
-
-
+    # GET-запрос: отображение отзывов
     page = request.args.get('page', 1, type=int)
     reviews = Review.query.filter_by(course_id=course_id)
     reviews_filter = request.args.get('reviews_filter')
-    d={'reviews_filter': reviews_filter, 'course_id': course_id}
+    d = {'reviews_filter': reviews_filter, 'course_id': course_id}
+    
     if reviews_filter == 'by_pos':
         reviews = reviews.order_by(Review.rating.desc())
     elif reviews_filter == 'by_neg':
         reviews = reviews.order_by(Review.rating.asc())
     else:
         reviews = reviews.order_by(Review.created_at.desc())
-    pagination = reviews.paginate(page=page, count=5)
+
+    pagination = reviews.paginate(page=page, per_page=5)
     reviews = pagination.items
+
+    check_review = Review.query.filter_by(course_id=course_id, user_id=current_user.id).first()
     
     return render_template('courses/reviews.html', 
                            course_reviews=reviews, 
                            course_id=course_id, 
                            pagination=pagination, 
-                           search_params = d, 
-                           check_review=check_review
-    )
+                           search_params=d, 
+                           check_review=check_review)
